@@ -1,0 +1,51 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Voucher {
+  id           Int               @id @default(autoincrement())
+  createdAt    DateTime          @default(now())
+  order_id     Int
+  reference    String?           @unique
+  product_id   Int
+  store_id     Int
+  product_name String
+  qty          Int
+  store_name   String
+  status       VoucherStatusType @default(ACTIVE)
+  owner        User  @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+}
+
+model User {
+    id           Int               @id @default(autoincrement())
+    createdAt    DateTime          @default(now())
+    email        String  @unique
+    password     String
+    name     String
+    photo_url    String?
+    user_firebase String? @unique
+    address String?
+    phone_number Int?
+    gender   UserGenderType?
+    vouchers Voucher[]
+}
+
+enum UserGenderType {
+  MALE
+  FEMALE
+}
+
+enum VoucherStatusType {
+  EXPIRED
+  ACTIVE
+  USED
+}
