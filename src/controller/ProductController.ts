@@ -44,6 +44,24 @@ class ProductController {
       return response.status(500).json({ code: 500, msg: error.message });
     }
   }
+
+  async featuredProducts(request: Request, response: Response) {
+    try {
+      const queries = request.query;
+      let query_params = "";
+
+      for (let query in queries) {
+        query_params += `${query}=${queries[query]}&&`;
+      }
+
+      const { data } = await Woocommerce.get(`products?${query_params}&&per_page=3`);
+      return response.json(
+        data.filter((product) => product.status === "publish")
+      );
+    } catch (error) {
+      return response.status(500).json({ code: 500, msg: error.message });
+    }
+  }
 }
 
 export default new ProductController(Cache);

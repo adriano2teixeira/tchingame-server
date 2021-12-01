@@ -13,6 +13,7 @@ routes.get("/", (req: Request, res: Response) => res.send("Hello World"));
  */
 routes.get("/products", ProductController.index);
 routes.get("/products/:slug", ProductController.findOneBySlug);
+routes.get("/products/filter/featured", ProductController.featuredProducts)
 
 // Category endpoints
 routes.get("/categories", CategoryController.index);
@@ -23,6 +24,7 @@ routes.get("/featured/categories", CategoryController.featured);
 // Voucher endpoints
 routes.get("/vouchers", VoucherController.index);
 routes.post("/vouchers", VoucherController.generate);
+routes.get("/vouchers/users/:id", VoucherController.findMy)
 
 // User endpoints
 routes.post("/users", UserController.create);
