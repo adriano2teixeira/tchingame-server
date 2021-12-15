@@ -12,7 +12,7 @@ class CategoryController {
 
       await Woocommerce.get("products/categories").then((products: any) => {
         Cache.add("categories", JSON.stringify(products.data));
-        return response.json(products.data);
+        return response.json(products.data.filter(product => product.slug !== "uncategorized"));
       });
     } catch (error) {
       return response.status(500).json({ code: 500, msg: error.message });
