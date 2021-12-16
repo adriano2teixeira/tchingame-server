@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { WooOrder } from "../utils/WooOrder";
 import crypto from "crypto-promise";
-import Queue from "../modules/Queue";
 import Product from "../utils/Product";
 
 const WooOrderUtil = new WooOrder();
@@ -69,19 +68,19 @@ class VoucherController {
 
       const voucher = await prisma.voucher.create({ data });
 
-      Queue.add(
-        "VoucherRemoveStock",
-        {
-          productId: data.product_id,
-          stock: Number(stock),
-          units: Number(data.qty),
-        },
-        {}
-      );
-      // divide the days by 3600000 to get miliseconds
-      Queue.add("VoucherControl", voucher, { delay: 30000 });
+      // Queue.add(
+      //   "VoucherRemoveStock",
+      //   {
+      //     productId: data.product_id,
+      //     stock: Number(stock),
+      //     units: Number(data.qty),
+      //   },
+      //   {}
+      // );
+      // // divide the days by 3600000 to get miliseconds
+      // Queue.add("VoucherControl", voucher, { delay: 30000 });
 
-      return response.json(voucher);
+      // return response.json(voucher);
     } catch (error) {
       console.log(error.message);
       return response.status(500).json({ code: 500, msg: error.message });
