@@ -39,5 +39,8 @@
     "execMap": {
       "ts": "node -r sucrase/register"
     }
+  },
+  "engines": {
+    "node": "12"
   }
 }
